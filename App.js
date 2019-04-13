@@ -10,13 +10,16 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import RespondMe from './src/components/respond-me'
 import DragSliders from './src/components/DragSliders'
+
+import Draggable from './src/components/Draggable'
 export default class App extends Component{
   render() {
     return (
 
       <View style={styles.container}>
             {/* <RespondMe /> */}
-          <DragSliders/>
+          {/* <DragSliders/> */}
+          <Draggable/>
          </View>
     );
   }
