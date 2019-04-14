@@ -12,6 +12,7 @@ import RespondMe from './src/components/respond-me'
 import DragSliders from './src/components/DragSliders'
 import Sliders from './src/components/Sliders'
 import Draggable from './src/components/Draggable'
+import List from './src/components/List'
 export default class App extends Component{
   render() {
     return (
@@ -20,7 +21,8 @@ export default class App extends Component{
             {/* <RespondMe /> */}
           {/* <DragSliders/> */}
           {/* <Draggable/> */}
-          <Sliders/>
+          {/* <Sliders/> */}
+          <List/>
          </View>
     );
   }
