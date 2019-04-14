@@ -11,34 +11,36 @@ export class ClockInSwitch extends Component {
         super(props);
         this.state = {
             pan: new Animated.ValueXY(),
-            
+            panValue:0
         };
     }
     componentWillMount() {
-        let newXVal
         this._panResponder = PanResponder.create({
             onMoveShouldSetResponderCapture: () => true,
             onMoveShouldSetPanResponderCapture: () => true,
             onStartShouldSetPanResponder:()=>true,
             onStartShouldSetPanResponderCapture:()=>true,
             onPanResponderGrant: (e, gestureState) => {
-                // this.state.pan.setOffset({x:gestureState.dx , y:0})
-                // this.state.pan.setValue({x: 0, y: 0});
+                this.state.pan.setOffset({x: this.state.pan.x._value , y: this.state.pan.y._value});
+                this.state.pan.setValue({x:0,y:0})
             },
             //here's where you can check, constrain and store values
             onPanResponderMove: (evt, gestureState) => {
                 // 300 is the width of the red container (will leave it to you to calculate this
                 // dynamically) 100 is the width of the button (90) plus the 5px margin on
                 // either side of it (10px total)
-               if(evt.nativeEvent.pageX < 400 - 200 ) { 
-                   newXVal =  evt.nativeEvent.pageX
-                }
-                else{
-                    newXVal = 400 - 200 
-                }
-                this.state.pan.x.setValue(newXVal);
+            //    if(gestureState.dx < 400 - 200 && gestureState.dx> 0 ) { 
+            //        newXVal =  gestureState.dx
+                   
+            //     }
+            //     else{
+            //         // newXVal = 400 - 200 
+            //     }
+            if( Math.floor(gestureState.moveX) < 315 && Math.floor(gestureState.moveX) > 100) {
+                this.state.pan.x.setValue(gestureState.dx);
+            }
                 //set this state for display
-                // this.setState({panValue: newXVal});
+                this.setState({panValue: gestureState.moveX});
             },
 
             onPanResponderRelease: (e, {vx, vy}) => {
@@ -55,9 +57,9 @@ export class ClockInSwitch extends Component {
         });
     }
 
-    componentWillUnMount() {
-        this.state.pan.x.removeAllListeners();
-    }
+    // componentWillUnMount() {
+    //     this.state.pan.x.removeAllListeners();
+    // }
 
     render() {
         //decouple the value from the state object
@@ -74,16 +76,9 @@ export class ClockInSwitch extends Component {
                 <View style={styles.buttonStyle}>
                     <Animated.View
                         style={[styles.sliderButtonStyle, translateStyle]}
-                        {...this._panResponder.panHandlers}>
-                        <Text
-                        style={{alignSelf: "center",
-                        marginHorizontal: 10}}
-                            
-                           >Drag On</Text>
-
-                    </Animated.View>
+                        {...this._panResponder.panHandlers}></Animated.View>
                 </View>
-                <Text style={styles.rightText}>{this.state.pan.x._value}: x value</Text>
+                <Text style={styles.rightText}>{this.state.panValue}: x value</Text>
             </View>
         );
     }
@@ -97,8 +92,8 @@ const styles = StyleSheet.create({
         borderWidth: .5,
         backgroundColor: '#FCFFF5',
         borderRadius: 45,
-        height: 90,
-        width: 90,
+        height: 60,
+        width: 60,
         justifyContent: 'center',
         textAlign: 'center',
         marginHorizontal: 5,
