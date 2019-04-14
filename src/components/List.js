@@ -10,12 +10,12 @@ import Element from './Element';
 
 
 const listData = [
-  { key: '1. element' },
-  { key: '2. element' },
-  { key: '3. element' },
-  { key: '4. element' },
-  { key: '5. element' },
-  { key: '6. element' },
+  { key: '1. element - swipe to delete' },
+  { key: '2. element - swipe to delete' },
+  { key: '3. element - swipe to delete' },
+  { key: '4. element - swipe to delete' },
+  { key: '5. element - swipe to delete' },
+  { key: '6. element - swipe to delete' },
 ];
 
 export default class List extends Component {
@@ -26,7 +26,7 @@ export default class List extends Component {
     this.setScrollEnabled = this.setScrollEnabled.bind(this);
 
     this.state = {
-      enable: true,
+      isEnabled: true,
       data: listData,
     };
   }
@@ -46,9 +46,9 @@ export default class List extends Component {
     });
   }
 
-  setScrollEnabled(enable) {
+  setScrollEnabled(isEnabled) {
     this.setState({
-      enable,
+      isEnabled,
     });
   }
 
@@ -63,10 +63,10 @@ export default class List extends Component {
           <Element
             text={item.key}
             deletation={this.deletation}
-            setScrollEnabled={enable => this.setScrollEnabled(enable)}
+            setScrollEnabled={isEnabled => this.setScrollEnabled(isEnabled)}
           />)
         }
-        scrollEnabled={this.state.enable}
+        scrollEnabled={this.state.isEnabled}
       />
     );
   }

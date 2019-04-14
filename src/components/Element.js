@@ -56,9 +56,10 @@ export default class Element extends React.PureComponent {
   }
 
   render() {
+
     return (
       <View style={styles.listItem}>
-        <Animated.View style={[this.state.position.getLayout()]} {...this.panResponder.panHandlers}>
+        <Animated.View style={[{transform:[{translateX:this.state.position.x}]}]} {...this.panResponder.panHandlers}>
           <View style={styles.absoluteCell}>
             <Text style={styles.absoluteCellText}>DELETE</Text>
           </View>
