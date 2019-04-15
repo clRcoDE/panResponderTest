@@ -9,7 +9,7 @@ export default class Element extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.gestureDelay = -35;
+    this.gestureDelay = -25;
     this.scrollViewEnabled = true;
 
     const position = new Animated.ValueXY();
@@ -18,31 +18,42 @@ export default class Element extends React.PureComponent {
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderMove: (evt, gestureState) => {
-        if (gestureState.dx > 35) {
+        if (gestureState.dx > 25) {
           this.setScrollViewEnabled(false);
           let newX = gestureState.dx + this.gestureDelay;
           position.setValue({ x: newX, y: 0 });
-        }else if( gestureState.dx < -35 ){
+        } else if (gestureState.dx < -25) {
           this.setScrollViewEnabled(false);
           let newX = gestureState.dx + Math.abs(this.gestureDelay);
           position.setValue({ x: newX, y: 0 });
         }
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (gestureState.dx < width/2) {
+        if (Math.abs(gestureState.dx) < width / 2) {
 
           Animated.timing(this.state.position, {
             toValue: { x: 0, y: 0 },
             duration: 300,
-            useNativeDriver:true
+            useNativeDriver: true
           }).start(() => {
             this.setScrollViewEnabled(true);
           });
-        }else {
+        } else if (gestureState.dx > width / 2) {
           Animated.timing(this.state.position, {
             toValue: { x: width, y: 0 },
             duration: 300,
-            useNativeDriver:true
+            useNativeDriver: true
+          }).start(() => {
+            this.props.deletation(this.props.text);
+            this.setScrollViewEnabled(true);
+          });
+
+
+        } else if (gestureState.dx < -width / 2) {
+          Animated.timing(this.state.position, {
+            toValue: { x: -width, y: 0 },
+            duration: 300,
+            useNativeDriver: true
           }).start(() => {
             this.props.deletation(this.props.text);
             this.setScrollViewEnabled(true);
@@ -66,9 +77,9 @@ export default class Element extends React.PureComponent {
 
     return (
       <View style={styles.listItem}>
-        <Animated.View style={[{flexDirection: 'row',marginLeft:-width,transform:[{translateX:this.state.position.x}]}]} {...this.panResponder.panHandlers}>
+        <Animated.View style={[styles.listItemWrapper, { transform: [{ translateX: this.state.position.x }] }]} {...this.panResponder.panHandlers}>
           <View style={styles.absoluteCellDelete}>
-            <Text style={styles.absoluteCellText}>DELETE</Text>
+            <Text style={styles.absoluteCellDeleteText}>DELETE</Text>
           </View>
           <View style={styles.innerCell}>
             <Text style={styles.innerText} >
@@ -76,7 +87,7 @@ export default class Element extends React.PureComponent {
             </Text>
           </View>
           <View style={styles.absoluteCellDone}>
-            <Text style={styles.absoluteCellText}>DONE</Text>
+            <Text style={styles.absoluteCellDoneText}>DONE</Text>
           </View>
         </Animated.View>
       </View>
@@ -89,10 +100,14 @@ const styles = StyleSheet.create({
     height: 100,
     // marginLeft: -100,
     justifyContent: 'center',
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
     // flexDirection: 'row',
-
-borderWidth:3
+    // borderWidth:3
+  },
+  listItemWrapper: {
+    flexDirection: 'row',
+    height: 100,
+    marginLeft: -width,
   },
   absoluteCellDelete: {
     // position: 'absolute',
@@ -103,7 +118,7 @@ borderWidth:3
     // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'lime'
+    backgroundColor: '#f44'
   },
   absoluteCellDone: {
     // position: 'absolute',
@@ -111,26 +126,38 @@ borderWidth:3
     // bottom: 0,
     // left: 0,
     width: width,
+
     // flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'gold'
+    backgroundColor: '#4f4'
   },
-  absoluteCellText: {
-    margin: 16,
+  absoluteCellDeleteText: {
+    // margin: 16,
     color: '#FFF',
+    fontWeight: '600',
+    fontSize: 16
+  },
+  absoluteCellDoneText: {
+    // margin: 16,
+    color: '#555',
+    fontWeight: '600',
+    fontSize: 16
   },
   innerCell: {
     width: width,
-    height: 80,
+    // height: 80,
     // marginLeft: 100,
-    backgroundColor: '#55f',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2.5,
+    borderColor: 'rgba(0,0,0,0.1)',
+
   },
-  innerText:{
-    color:'#fff',
-    fontSize:18,
-    // fontWeight: '600',
+  innerText: {
+    color: 'rgba(75, 75, 75,0.65)',
+    fontSize: 18,
+    fontWeight: '600',
   }
 });

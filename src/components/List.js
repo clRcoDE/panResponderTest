@@ -10,24 +10,24 @@ import Element from './Element';
 
 
 const listData = [
-    { key: '1. element - swipe to delete' },
-    { key: '2. element - swipe to delete' },
-    { key: '3. element - swipe to delete' },
-    { key: '4. element - swipe to delete' },
-    { key: '5. element - swipe to delete' },
-    { key: '6. element - swipe to delete' },
-    { key: '7. element - swipe to delete' },
-    { key: '8. element - swipe to delete' },
-    { key: '9. element - swipe to delete' },
-    { key: '10. element - swipe to delete' },
-    { key: '11. element - swipe to delete' },
-    { key: '12. element - swipe to delete' },
+    { key: '1. Element ' },
+    { key: '2. Element ' },
+    { key: '3. Element ' },
+    { key: '4. Element ' },
+    { key: '5. Element ' },
+    { key: '6. Element ' },
+    { key: '7. Element ' },
+    { key: '8. Element ' },
+    { key: '9. Element ' },
+    { key: '10. Element ' },
+    { key: '11. Element ' },
+    { key: '12. Element ' },
 ];
 
 export default class List extends Component {
   constructor(props) {
     super(props);
-    this.renderSeparator = this.renderSeparator.bind(this);
+    // this.renderSeparator = this.renderSeparator.bind(this);
     this.deletation = this.deletation.bind(this);
     this.setScrollEnabled = this.setScrollEnabled.bind(this);
 
@@ -37,13 +37,13 @@ export default class List extends Component {
     };
   }
 
-  renderSeparator() {
-    return (
-      <View style={styles.separatorViewStyle}>
-        <View style={styles.separatorStyle} />
-      </View>
-    );
-  }
+//   renderSeparator() {
+//     return (
+//       <View style={styles.separatorViewStyle}>
+//         <View style={styles.separatorStyle} />
+//       </View>
+//     );
+//   }
 
   deletation(key) {
     const data = this.state.data.filter(item => item.key !== key);
@@ -64,11 +64,13 @@ export default class List extends Component {
       <FlatList
         style={this.props.style}
         data={this.state.data}
-        ItemSeparatorComponent={this.renderSeparator}
+        // ItemSeparatorComponent={this.renderSeparator}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <Element
             text={item.key}
             deletation={this.deletation}
+            
             setScrollEnabled={isEnabled => this.setScrollEnabled(isEnabled)}
           />)
         }
