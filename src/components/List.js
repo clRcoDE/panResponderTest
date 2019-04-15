@@ -10,11 +10,11 @@ import Element from './Element';
 
 
 const listData = [
-    { key: '1. Element ' },
-    { key: '2. Element ' },
-    { key: '3. Element ' },
-    { key: '4. Element ' },
-    { key: '5. Element ' },
+    { key: '1. buy  N' },
+    { key: '2. Do X ' },
+    { key: '3. take this  ' },
+    { key: '4. make that ' },
+    { key: '5. there"s going to be todo ' },
     { key: '6. Element ' },
     { key: '7. Element ' },
     { key: '8. Element ' },
@@ -66,11 +66,11 @@ export default class List extends Component {
         data={this.state.data}
         // ItemSeparatorComponent={this.renderSeparator}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
+        renderItem={({ item ,index}) => (
           <Element
             text={item.key}
             deletation={this.deletation}
-            
+            index={index}
             setScrollEnabled={isEnabled => this.setScrollEnabled(isEnabled)}
           />)
         }

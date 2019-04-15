@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions, PanResponder } from 'react-native';
+import { View, Text, StyleSheet, Animated, Dimensions, PanResponder, Easing } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -14,9 +14,36 @@ export default class Element extends React.PureComponent {
 
     const position = new Animated.ValueXY();
     const panResponder = PanResponder.create({
+      // onStartShouldSetPanResponder: (evt, gestureState) => {
+      //   console.warn(`CALLED FOR Start   ${this.props.index}`)
+      //   return true
+      // },
+      // onMoveShouldSetPanResponder: (evt, gestureState) => {
+      //   console.warn(`CALLED FOR Move  ${this.props.index}`)
+      //   return true
+      // },
+      // onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+      //   console.warn(`CALLED FOR  Start Capture ${this.props.index}`)
+      //   return true
+      // },
+      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+      //   console.warn(`CALLED FOR Move Capture  ${this.props.index}`)
+      //   return true
+      // },
+      // onPanResponderTerminationRequest: (evt, gestureState) => {
+      //   console.warn(`CALLED FOR Termination Request  ${this.props.index}`)
+      //   return false
+      // },
+      // onPanResponderTerminate: (event) => {
+      //   console.warn(`CALLED FOR Terminate  ${this.props.index}`)
+      //   return true
+
+      // },
+
       onStartShouldSetPanResponder: (evt, gestureState) => false,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderTerminationRequest: (evt, gestureState) => false,
+
       onPanResponderMove: (evt, gestureState) => {
         if (gestureState.dx > 25) {
           this.setScrollViewEnabled(false);
@@ -29,20 +56,44 @@ export default class Element extends React.PureComponent {
         }
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (Math.abs(gestureState.dx) < width / 2) {
+        if (Math.abs(gestureState.dx) < width * (60 / 100)) {
 
           Animated.timing(this.state.position, {
             toValue: { x: 0, y: 0 },
-            duration: 300,
-            useNativeDriver: true
+            duration: 500,
+            useNativeDriver: true,
+            easing: Easing.in(Easing.quad),
+            // Easing.bounce
+            // Easing.cubic
+            //  Easing.back(2)
+            // Easing.elastic(2)
+            // Easing.ease
+            // Easing.inOut(Easing.quad)
+            // Easing.in(Easing.quad)
+            // Easing.out(Easing.quad)
+            // Easing.sin
+            // Easing.linear
+            // Easing.quad
           }).start(() => {
             this.setScrollViewEnabled(true);
           });
-        } else if (gestureState.dx > width / 2) {
+        } else if (gestureState.dx > -width * (60/100)) {
           Animated.timing(this.state.position, {
             toValue: { x: width, y: 0 },
-            duration: 300,
-            useNativeDriver: true
+            duration: 500,
+            useNativeDriver: true,
+            easing: Easing.in(Easing.quad),
+            // Easing.bounce
+            // Easing.cubic
+            // Easing.back(2)
+            // Easing.elastic(2)
+            // Easing.ease
+            // Easing.inOut(Easing.quad)
+            // Easing.in(Easing.quad)
+            // Easing.out(Easing.quad)
+            // Easing.sin
+            // Easing.linear
+            // Easing.quad
           }).start(() => {
             this.props.deletation(this.props.text);
             this.setScrollViewEnabled(true);
