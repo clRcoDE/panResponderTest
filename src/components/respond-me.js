@@ -123,7 +123,15 @@ class RespondMe extends Component {
          onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
          onPanResponderMove: (event, gestureState) => {
             object1Position.setValue({ x: gestureState.dx, y: gestureState.dy })
-            // console.warn("PAGEX:"+Math.round(event.nativeEvent.pageX) ,"LOCX: "+ Math.round(event.nativeEvent.locationX) ,"MOVEX :"+ Math.round(gestureState.moveX) )
+            if(gestureState.moveX > 150 && gestureState.moveX < 325 && gestureState.moveY > 300 && gestureState.moveY < 425){
+               
+               this.setState({currentEmoji:emojis.tounge})
+            }else{
+               // if(this.state.currentEmoji === emojis.tounge){
+                  this.setState({currentEmoji:emojis.sleep})
+               // }
+            }
+            // console.warn("PAGEX:"+Math.round(event.nativeEvent.pageX) ,"PAGEY: "+ Math.round(event.nativeEvent.pageY))
          },
          onPanResponderRelease: (evt, gestureState) => {
             if (evt.nativeEvent.pageX > 175 && evt.nativeEvent.pageX < 275 && evt.nativeEvent.pageY > 225 && evt.nativeEvent.pageY < 400 && this.state.foodCount > 0) {
