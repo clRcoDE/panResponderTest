@@ -22,20 +22,27 @@ export default class Element extends React.PureComponent {
           this.setScrollViewEnabled(false);
           let newX = gestureState.dx + this.gestureDelay;
           position.setValue({ x: newX, y: 0 });
+        }else if( gestureState.dx < -35 ){
+          this.setScrollViewEnabled(false);
+          let newX = gestureState.dx + Math.abs(this.gestureDelay);
+          position.setValue({ x: newX, y: 0 });
         }
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (gestureState.dx < 200) {
+        if (gestureState.dx < width/2) {
+
           Animated.timing(this.state.position, {
             toValue: { x: 0, y: 0 },
             duration: 300,
+            useNativeDriver:true
           }).start(() => {
             this.setScrollViewEnabled(true);
           });
-        } else {
+        }else {
           Animated.timing(this.state.position, {
             toValue: { x: width, y: 0 },
             duration: 300,
+            useNativeDriver:true
           }).start(() => {
             this.props.deletation(this.props.text);
             this.setScrollViewEnabled(true);
@@ -48,10 +55,10 @@ export default class Element extends React.PureComponent {
     this.state = { position };
   }
 
-  setScrollViewEnabled(enabled) {
-    if (this.scrollViewEnabled !== enabled) {
-      this.props.setScrollEnabled(enabled);
-      this.scrollViewEnabled = enabled;
+  setScrollViewEnabled(isEnabled) {
+    if (this.scrollViewEnabled !== isEnabled) {
+      this.props.setScrollEnabled(isEnabled);
+      this.scrollViewEnabled = isEnabled;
     }
   }
 
@@ -59,14 +66,17 @@ export default class Element extends React.PureComponent {
 
     return (
       <View style={styles.listItem}>
-        <Animated.View style={[{transform:[{translateX:this.state.position.x}]}]} {...this.panResponder.panHandlers}>
-          <View style={styles.absoluteCell}>
+        <Animated.View style={[{flexDirection: 'row',marginLeft:-width,transform:[{translateX:this.state.position.x}]}]} {...this.panResponder.panHandlers}>
+          <View style={styles.absoluteCellDelete}>
             <Text style={styles.absoluteCellText}>DELETE</Text>
           </View>
           <View style={styles.innerCell}>
-            <Text>
+            <Text style={styles.innerText} >
               {this.props.text}
             </Text>
+          </View>
+          <View style={styles.absoluteCellDone}>
+            <Text style={styles.absoluteCellText}>DONE</Text>
           </View>
         </Animated.View>
       </View>
@@ -76,20 +86,35 @@ export default class Element extends React.PureComponent {
 
 const styles = StyleSheet.create({
   listItem: {
-    height: 80,
-    marginLeft: -100,
+    height: 100,
+    // marginLeft: -100,
     justifyContent: 'center',
     backgroundColor: 'red',
+    // flexDirection: 'row',
+
+borderWidth:3
   },
-  absoluteCell: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    width: 100,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+  absoluteCellDelete: {
+    // position: 'absolute',
+    // top: 0,
+    // bottom: 0,
+    // left: 0,
+    width: width,
+    // flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:'lime'
+  },
+  absoluteCellDone: {
+    // position: 'absolute',
+    // top: 0,
+    // bottom: 0,
+    // left: 0,
+    width: width,
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor:'gold'
   },
   absoluteCellText: {
     margin: 16,
@@ -98,9 +123,14 @@ const styles = StyleSheet.create({
   innerCell: {
     width: width,
     height: 80,
-    marginLeft: 100,
+    // marginLeft: 100,
     backgroundColor: '#55f',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  innerText:{
+    color:'#fff',
+    fontSize:18,
+    // fontWeight: '600',
+  }
 });

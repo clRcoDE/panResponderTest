@@ -10,12 +10,18 @@ import Element from './Element';
 
 
 const listData = [
-  { key: '1. element - swipe to delete' },
-  { key: '2. element - swipe to delete' },
-  { key: '3. element - swipe to delete' },
-  { key: '4. element - swipe to delete' },
-  { key: '5. element - swipe to delete' },
-  { key: '6. element - swipe to delete' },
+    { key: '1. element - swipe to delete' },
+    { key: '2. element - swipe to delete' },
+    { key: '3. element - swipe to delete' },
+    { key: '4. element - swipe to delete' },
+    { key: '5. element - swipe to delete' },
+    { key: '6. element - swipe to delete' },
+    { key: '7. element - swipe to delete' },
+    { key: '8. element - swipe to delete' },
+    { key: '9. element - swipe to delete' },
+    { key: '10. element - swipe to delete' },
+    { key: '11. element - swipe to delete' },
+    { key: '12. element - swipe to delete' },
 ];
 
 export default class List extends Component {
