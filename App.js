@@ -13,6 +13,7 @@ import DragSliders from './src/components/DragSliders'
 import Sliders from './src/components/Sliders'
 import Draggable from './src/components/Draggable'
 import List from './src/components/List'
+import MultiTouch from './src/components/MultiTouch'
 export default class App extends Component{
   render() {
     return (
@@ -22,7 +23,8 @@ export default class App extends Component{
           {/* <DragSliders/> */}
           {/* <Draggable/> */}
           {/* <Sliders/> */}
-          <List/>
+          {/* <List/> */}
+          <MultiTouch/>
          </View>
     );
   }
