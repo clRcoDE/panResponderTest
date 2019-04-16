@@ -30,21 +30,28 @@ export default class MultiTouch extends Component {
 
 
   componentWillMount() {
+this.locx1;
+this.locx2;
+this.locy1;
+this.locy2;
+this.nextdisx;
+this.nextdisy;
 
     this.panresponder = PanResponder.create({
       onMoveShouldSetPanResponder: (event, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: (event, gestureState) => {
         this.state.pan.setOffset({ x: this.state.pan.x._value, y: this.state.pan.y._value })
         this.state.pan.setValue({ x: 0, y: 0 })
         // this.state.scale.setOffset(this.state.scale._value)
-        this.state.scale.setValue(1)
+        // this.state.scale.setValue(1)
 
-        if (event.nativeEvent.touches.length === 2) {
-          this.setState({ color: colors.blue })
-        } else {
+        // if (event.nativeEvent.touches.length === 2) {
+        //   this.setState({ color: colors.blue })
+        // } else {
 
-          this.setState({ color: colors.red })
-        }
+        //   this.setState({ color: colors.red })
+        // }
 
       },
       onPanResponderMove: (event, gestureState) => {
@@ -69,37 +76,37 @@ export default class MultiTouch extends Component {
           //   this.setState({size:{width:this.state.size.width- (Math.ceil(gestureState.dx)*4), height:this.state.size.height- (Math.ceil(gestureState.dy)*4)}})
 
           // }
-          let locx1 = Math.round(event.nativeEvent.changedTouches[0].locationX);
-          let locx2 = Math.round(event.nativeEvent.changedTouches[1].locationX);
+          this.locx1 = Math.round(event.nativeEvent.changedTouches[0].locationX);
+          this.locx2 = Math.round(event.nativeEvent.changedTouches[1].locationX);
 
-          let locy1 = Math.round(event.nativeEvent.changedTouches[0].locationY);
-          let locy2 = Math.round(event.nativeEvent.changedTouches[1].locationY);
+          this.locy1 = Math.round(event.nativeEvent.changedTouches[0].locationY);
+          this.locy2 = Math.round(event.nativeEvent.changedTouches[1].locationY);
 
-          let nextdisx = Math.abs(locx1 - locx2);
-          let nextdisy = Math.abs(locy1 - locy2);
+          this.nextdisx = Math.abs(this.locx1 - this.locx2);
+          this.nextdisy = Math.abs(this.locy1 - this.locy2);
 
           // let prevdis =  this.state.disx+this.state.disy 
           // let nextdis = disx+disy
           // console.warn( ,  )
 
-          let prevdisx = this.state.disx
-          let prevdisy = this.state.disy
+          // let prevdisx = this.state.disx
+          // let prevdisy = this.state.disy
 
 
-          let averagedis = ((nextdisx + nextdisy) / 2)
-          let averagejoe = ((nextdisx + nextdisy) / 2) / 101.000450897
+          // let averagedis = ((this.nextdisx + this.nextdisy) / 2)
+          let averagejoe = ((this.nextdisx + this.nextdisy) / 2) / 100.0000560000450000
           // console.warn(averagejoe, this.state.scale)
-          if (nextdisx > prevdisx && nextdisy > prevdisy) {
+          // if (nextdisx > prevdisx && nextdisy > prevdisy) {
             // this.setState({scale:averagejoe})
             this.state.scale.setValue(averagejoe)
 
-          } else {
+          // } else {
             // this.setState({scale:averagejoe})
-            this.state.scale.setValue(averagejoe)
+            // this.state.scale.setValue(averagejoe)
 
-          }
+          // }
 
-
+// return Animated.event([])
           // console.warn(disx , disy)
           // if(disx>0){
           //   this.setState({size:{width:this.state.size.width+disx, height:this.state.size.height+ (Math.ceil(gestureState.dy)*4)}})
@@ -109,7 +116,7 @@ export default class MultiTouch extends Component {
 
 
           // this.state.size.setValue({ width: gestureState.dx, height: gestureState.dy })
-          this.setState({ disx: nextdisx, disy: nextdisy })
+          this.setState({ disx: this.nextdisx, disy: this.nextdisy })
         } else {
           this.state.pan.setValue({ x: gestureState.dx, y: gestureState.dy })
 
