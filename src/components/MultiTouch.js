@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, Animated, PanResponder , Image } from 'react-native'
+import { Text, StyleSheet, View, Animated, PanResponder, Image } from 'react-native'
 
 
 
@@ -97,10 +97,6 @@ export default class MultiTouch extends Component {
       onPanResponderRelease: (event, gestureState) => {
 
         this.state.pan.flattenOffset()
-
-
-
-
         this.state.scale.flattenOffset()
       }
     })
@@ -114,7 +110,6 @@ export default class MultiTouch extends Component {
       <View style={styles.container} >
         <Animated.Image style={[styles.box, {
 
-          // backgroundColor: this.state.color,
           transform: [
             { translateX: this.state.pan.x },
             { translateY: this.state.pan.y },
@@ -122,9 +117,9 @@ export default class MultiTouch extends Component {
           ]
         }
 
-        
+
         ]}
-        source={require('../assets/images/calendar.png')}
+          source={require('../assets/images/calendar.png')}
           {...this.panresponder.panHandlers}>
 
 
@@ -145,7 +140,6 @@ const styles = StyleSheet.create({
   box: {
     width: 200,
     height: 200,
-    // backgroundColor: '#f34'
   }
 
 })
