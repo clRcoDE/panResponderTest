@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, Animated, PanResponder } from 'react-native'
+import { Text, StyleSheet, View, Animated, PanResponder , Image } from 'react-native'
 
 
 
@@ -16,118 +16,92 @@ export default class MultiTouch extends Component {
     super(props)
     this.state = {
       pan: new Animated.ValueXY(),
-      // scal: new Animated.ValueXY({x:1 , y:1}),
       color: colors.red,
       disx: 0,
       disy: 0,
-      // size: {
-      //   width: 200,
-      //   height: 200
-      // }
-      scale: new Animated.Value(1)
+      scale: new Animated.Value(1),
+
+      laststanding: 1,
+      newstanding: 1,
+      isFirst: null
     }
   }
 
 
   componentWillMount() {
-this.locx1;
-this.locx2;
-this.locy1;
-this.locy2;
-this.nextdisx;
-this.nextdisy;
+
 
     this.panresponder = PanResponder.create({
+
+
       onMoveShouldSetPanResponder: (event, gestureState) => true,
       onMoveShouldSetPanResponderCapture: () => true,
+      onStartShouldSetPanResponderCapture: () => true,
+
+      onMoveShouldSetPanResponderCapture: () => true,
+
       onPanResponderGrant: (event, gestureState) => {
+
+
         this.state.pan.setOffset({ x: this.state.pan.x._value, y: this.state.pan.y._value })
         this.state.pan.setValue({ x: 0, y: 0 })
-        // this.state.scale.setOffset(this.state.scale._value)
-        // this.state.scale.setValue(1)
-
-        // if (event.nativeEvent.touches.length === 2) {
-        //   this.setState({ color: colors.blue })
-        // } else {
-
-        //   this.setState({ color: colors.red })
-        // }
+        this.setState({ isFirst: true })
 
       },
       onPanResponderMove: (event, gestureState) => {
+
         if (event.nativeEvent.touches.length === 2) {
-          // console.warn(gestureState.dx,gestureState.dy)
-          // this.state.scal.setValue({x:this.state.scal.x.to+0.1, y:this.state.scal.y+0.1})
-          // let newx = this.state.scal.x.interpolate({
-          //   inputRange:[0,1],
-          //   outputRange:[1,2]
-          // })
-          // let newy =  this.state.scal.y.interpolate({
-          //   inputRange:[0,1],
-          //   outputRange:[1,2]
-          // })
+          let locx1 = event.nativeEvent.changedTouches[0].locationX;
+          let locx2 = event.nativeEvent.changedTouches[1].locationX;
 
-          // this.state.scal.setValue({x:Math.abs(newx), y:Math.abs(newy)})
+          let locy1 = event.nativeEvent.changedTouches[0].locationY;
+          let locy2 = event.nativeEvent.changedTouches[1].locationY;
 
-          // if(gestureState.dx>0){
-          //   this.setState({size:{width:this.state.size.width+ (Math.ceil(gestureState.dx)*4), height:this.state.size.height+ (Math.ceil(gestureState.dy)*4)}})
+          let nextdisx = Math.abs(locx1 - locx2);
+          let nextdisy = Math.abs(locy1 - locy2);
 
-          // }else{
-          //   this.setState({size:{width:this.state.size.width- (Math.ceil(gestureState.dx)*4), height:this.state.size.height- (Math.ceil(gestureState.dy)*4)}})
+          if (this.state.isFirst) {
 
-          // }
-          this.locx1 = Math.round(event.nativeEvent.changedTouches[0].locationX);
-          this.locx2 = Math.round(event.nativeEvent.changedTouches[1].locationX);
+            this.setState({ laststanding: (((nextdisx + nextdisy) / 2.000) / 100.000) })
+            this.setState({ newstanding: (((nextdisx + nextdisy) / 2.000) / 100.000) })
 
-          this.locy1 = Math.round(event.nativeEvent.changedTouches[0].locationY);
-          this.locy2 = Math.round(event.nativeEvent.changedTouches[1].locationY);
+            this.changes = this.state.newstanding - this.state.laststanding
 
-          this.nextdisx = Math.abs(this.locx1 - this.locx2);
-          this.nextdisy = Math.abs(this.locy1 - this.locy2);
-
-          // let prevdis =  this.state.disx+this.state.disy 
-          // let nextdis = disx+disy
-          // console.warn( ,  )
-
-          // let prevdisx = this.state.disx
-          // let prevdisy = this.state.disy
+            this.state.scale.setValue(this.state.scale._value + this.changes)
+            this.setState({ isFirst: false })
+          } else {
 
 
-          // let averagedis = ((this.nextdisx + this.nextdisy) / 2)
-          let averagejoe = ((this.nextdisx + this.nextdisy) / 2) / 100.0000560000450000
-          // console.warn(averagejoe, this.state.scale)
-          // if (nextdisx > prevdisx && nextdisy > prevdisy) {
-            // this.setState({scale:averagejoe})
-            this.state.scale.setValue(averagejoe)
-
-          // } else {
-            // this.setState({scale:averagejoe})
-            // this.state.scale.setValue(averagejoe)
-
-          // }
-
-// return Animated.event([])
-          // console.warn(disx , disy)
-          // if(disx>0){
-          //   this.setState({size:{width:this.state.size.width+disx, height:this.state.size.height+ (Math.ceil(gestureState.dy)*4)}})
-          // }
-
-          // console.warn(Math.abs(locx1 - locx2))
 
 
-          // this.state.size.setValue({ width: gestureState.dx, height: gestureState.dy })
-          this.setState({ disx: this.nextdisx, disy: this.nextdisy })
+            this.setState({ newstanding: (((nextdisx + nextdisy) / 2.000) / 100.000) })
+
+
+            this.changes = this.state.newstanding - this.state.laststanding
+
+
+
+            this.state.scale.setValue(this.state.scale._value + this.changes)
+
+
+            this.setState({ laststanding: this.state.newstanding })
+          }
+
         } else {
+
           this.state.pan.setValue({ x: gestureState.dx, y: gestureState.dy })
 
         }
 
       },
       onPanResponderRelease: (event, gestureState) => {
-        this.state.pan.flattenOffset()
-        this.state.scale.flattenOffset()
 
-        // this.state.scal.flattenOffset()
+        this.state.pan.flattenOffset()
+
+
+
+
+        this.state.scale.flattenOffset()
       }
     })
 
@@ -138,24 +112,24 @@ this.nextdisy;
 
     return (
       <View style={styles.container} >
-        <Animated.View style={[styles.box, {
-          // width: this.state.size.width,
-          // height: this.state.size.height,
-          backgroundColor: this.state.color,
+        <Animated.Image style={[styles.box, {
+
+          // backgroundColor: this.state.color,
           transform: [
             { translateX: this.state.pan.x },
             { translateY: this.state.pan.y },
             { scale: this.state.scale }
-            // { scaleX: this.state.scal.x },
-            // { scaleY: this.state.scal.y }
           ]
         }
+
+        
         ]}
+        source={require('../assets/images/calendar.png')}
           {...this.panresponder.panHandlers}>
 
 
 
-        </Animated.View>
+        </Animated.Image>
       </View>
     )
   }
@@ -171,7 +145,7 @@ const styles = StyleSheet.create({
   box: {
     width: 200,
     height: 200,
-    backgroundColor: '#f34'
+    // backgroundColor: '#f34'
   }
 
 })

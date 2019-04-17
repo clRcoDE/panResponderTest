@@ -14,6 +14,9 @@ import Sliders from './src/components/Sliders'
 import Draggable from './src/components/Draggable'
 import List from './src/components/List'
 import MultiTouch from './src/components/MultiTouch'
+import ZoomableImage from './src/components/multiTouchZoom'
+
+
 export default class App extends Component{
   render() {
     return (
@@ -25,6 +28,7 @@ export default class App extends Component{
           {/* <Sliders/> */}
           {/* <List/> */}
           <MultiTouch/>
+          {/* <ZoomableImage/> */}
          </View>
     );
   }
